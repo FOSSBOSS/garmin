@@ -1,0 +1,16 @@
+New Garmin GPS for tinkering!
+we need the car to become a dancing girl.
+Tried the old files, those had 18 frames.
+Lets see what these are...
+
+$file generic_arrow_.srf truck_blue.srf
+generic_arrow_.srf: Garmin Bitmap file, version 2.00, 3024x84
+truck_blue.srf:     Garmin Bitmap file, version 2.40, 2881x80
+
+ok, pressuming the height as 80 - 84, and that the frames are squares, 
+this would be 36 frames, for either, with a 1 pixel buffer. 
+
+The srf files... they are more or less standard bitmap files.
+Looks like theres nothing good in the repos for opening or editing srf files yet. 
+Thats fine. Last time I hacked a garmin was a decade ago. 
+I think back then, I made the bitmap, and modified the header to match garmins nonsense. 
