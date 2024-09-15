@@ -14,3 +14,57 @@ The srf files... they are more or less standard bitmap files.
 Looks like theres nothing good in the repos for opening or editing srf files yet. 
 Thats fine. Last time I hacked a garmin was a decade ago. 
 I think back then, I made the bitmap, and modified the header to match garmins nonsense. 
+
+"""
+Garmin BMP FILE HEADER analysis notes.
+
+Ok heres a standard bmp (header) we have 14 byte repacement for the header,
+next 4 bytes DIB Header Size 
+next 4 bytes Width, should be a multple of 36, 2880, 3240... idk what
+next 4 bytes Height 80-90 I've seen. 
+next 2 bytes planes, should be set to 1
+next 2 bytes bits per pixel.
+compression
+image size
+x px per meter
+y px per meter
+palete
+importance of colours
+
+OK I see the BS they pulling. 
+its a standard bitmap, but the header is 16 bytes instead of 14.
+which threw off my whole calculation. tricky. 
+ok so then the height and width are 2 bytes maybe, 
+(My suspicion is that they modify the header, but not the file format. if that makes sense.
+as in the data is bmp, but the header is modified. this would be the laziest option)
+
+From the header:
+47 41 52 4D 49 4E 20 42 49 54 4D 41 50 20 30 31 04 00 00 00 04 00 00 00
+
+Breakdown:
+47 41 52 4D 49 4E 20 42 49 54 4D 41 50 20 //  14b
+30 31 // width 2b
+04 00 // height 2b
+00 00 04 00 00 00 
+#######################
+How I think the Garmin header goes:
+14 byte header
+2b width
+2b height
+2b padding?
+.... then standard ops?
+
+##############
+OK OK
+The thing to do here is use a standard header 54 bytes
+with the size 3249x90, and over write the Naviga.srf with the standard header. 
+
+to go back, over write the start with the eh garmin 54 byte SRF header.
+47 41 52 4D 49 4E 20 42 49 54 4D 41 50 20 30 31 04 00 00 00 04 00 00 00 02 00 00 00 05 00 00 00 03 00 00 00 35 37 38 06 00 00 00 04 00 00 00 32 2E 30 30 07 00 00 00
+###STD bmp header DIMensioned 3240x90
+42 4D 66 59 0D 00 00 00 00 00 36 00 00 00 28 00 00 00 A8 0C 00 00 5A 00 00 00 01 00 18 00 00 00 00 00 30 59 0D 00 13 0B 00 00 13 0B 00 00 00 00 00 00 00 00 00 00
+###STD bmp header DIMensioned
+###STD bmp header DIMensioned
+###STD bmp header DIMensioned
+
+"""
